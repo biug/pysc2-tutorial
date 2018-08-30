@@ -7,7 +7,7 @@ import random
 class ZergAgent(base_agent.BaseAgent):
   def __init__(self):
     super(ZergAgent, self).__init__()
-    
+
     self.attack_coordinates = None
     self.action_args = []
     self.actions = []
@@ -17,11 +17,11 @@ class ZergAgent(base_agent.BaseAgent):
     if (len(obs.observation.single_select) > 0 and
         obs.observation.single_select[0].unit_type == unit_type):
       return True
-    
+
     if (len(obs.observation.multi_select) > 0 and
         obs.observation.multi_select[0].unit_type == unit_type):
       return True
-    
+
     return False
 
   def get_units_by_type(self, obs, unit_type):
@@ -41,7 +41,7 @@ class ZergAgent(base_agent.BaseAgent):
       if unit[0] == unit_type:
         return unit[1]
     return 0
-  
+
   def can_do(self, obs, action):
     return action in obs.observation.available_actions
 
@@ -82,13 +82,13 @@ class ZergAgent(base_agent.BaseAgent):
 
   def step(self, obs):
     super(ZergAgent, self).step(obs)
-    
+
     if obs.first():
       player_y, player_x = (obs.observation.feature_minimap.player_relative ==
                             features.PlayerRelative.SELF).nonzero()
       xmean = player_x.mean()
       ymean = player_y.mean()
-      
+
       if xmean <= 31 and ymean <= 31:
         self.attack_coordinates = (49, 49)
       else:
@@ -144,7 +144,7 @@ class ZergAgent(base_agent.BaseAgent):
       else:
         pass
       return actions.FUNCTIONS.no_op()
-    
+
     return actions.FUNCTIONS.no_op()
 
 def main(unused_argv):
@@ -162,20 +162,20 @@ def main(unused_argv):
           step_mul=4,
           game_steps_per_episode=0,
           visualize=True) as env:
-          
+
         agent.setup(env.observation_spec(), env.action_spec())
-        
+
         timesteps = env.reset()
         agent.reset()
-        
+
         while True:
           step_actions = [agent.step(timesteps[0])]
           if timesteps[0].last():
             break
           timesteps = env.step(step_actions)
-      
+
   except KeyboardInterrupt:
     pass
-  
+
 if __name__ == "__main__":
   app.run(main)

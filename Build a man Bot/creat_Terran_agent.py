@@ -104,12 +104,17 @@ class TerranAgent(base_agent.BaseAgent):
             refinery_All=self.get_all_units_by_type(obs,units.Terran.Refinery)
             reaper_All=self.get_all_units_by_type(obs,units.Terran.Reaper)
             orbitalCommand_All=self.get_all_units_by_type(obs,units.Terran.OrbitalCommand)
+            marine_All=self.get_all_units_by_type(obs,units.Terran.Marine)
+            tech_lab_All=self.get_all_units_by_type(obs,units.Terran.TechLab)
+            barracksTechlab_All=self.get_all_units_by_type(obs,units.Terran.BarracksTechLab)
             if mineral>300:
                 if self.can_do(obs,actions.FUNCTIONS.Morph_OrbitalCommand_quick.id)
                     return actions.FUNCTIONS.Morph_OrbitalCommand_quick("now")
             if mineral>200:
+                if len(scv_All)<50:
+                    self.producing(actions.FUNCTIONS.Train_SCV_quick,1,units.Terran.CommandCenter)
                 if len(scv_All)<10:
-                    self.producing(actions.FUNCTIONS.Train_SCV_quick,units.Terran.SCV,None)
+                    self.producing(actions.FUNCTIONS.Train_SCV_quick,1,units.Terran.CommandCenter)
                 elif len(scv_All)==50:
                     self.constructing(action.FUNCTIONS.Build_CommandCenter_screen,1,units.Terran.SCV)
                 elif len(scv_All)==35:
@@ -125,10 +130,15 @@ class TerranAgent(base_agent.BaseAgent):
                 elif len(scv_All)>=10:
                     self.constructing(action.FUNCTIONS.Build_SupplyDepot_screen,1,units.Terran.SCV)
                 if len(orbitalCommand_All)>0 and len(barracks_All)>0:
-                    self.producing(actions.FUNCTIONS.Train_Zergling_quick, 1,units.Zerg.Larva)
+                    self.producing(actions.FUNCTIONS.Train_Marine_quick, 1,units.Terran.Barracks)
+                if len(marine_All)>0 and len(tech_lab_All)<1:
+                    self.constructing(action.FUNCTIONS.Build_TechLab_screen,1,units.Terran.Barracks)
+                if len(BarracksTechLab)>0:
+                    self.producing(actions.FUNCTIONS.Train_Reaper_quick, 1,units.Terran.BarracksTechLab)
+
             if mineral<150:
                 self.mining(units.Terran.SCV)
-            if len(reaper_All)>0:
+            if len(reaper_All)>0 and len(marine_All)>0:
                 self.attack()
 
 
