@@ -14,7 +14,7 @@ class TerranAgent(base_agent.BaseAgent):
         self.unintMap={}
     ####### Agent Unit #######
     def unit_type_is_selected(self, obs, unit_type):
-        if (len(obs.observation.single_select) > 0 an
+        if (len(obs.observation.single_select) > 0 and
             obs.observation.single_select[0].unit_type == unit_type):
             return True
 
@@ -39,7 +39,7 @@ class TerranAgent(base_agent.BaseAgent):
     def get_unit_counts(self, obs, unit_type):
         for unit in obs.observation.unit_counts:
             if unit[0] == unit_type:
-            return unit[1]
+                return unit[1]
         return 0
     ####### Agent Action #######
     def can_do(self, obs, action):
@@ -108,7 +108,7 @@ class TerranAgent(base_agent.BaseAgent):
             tech_lab_All=self.get_all_units_by_type(obs,units.Terran.TechLab)
             barracksTechlab_All=self.get_all_units_by_type(obs,units.Terran.BarracksTechLab)
             if mineral>300:
-                if self.can_do(obs,actions.FUNCTIONS.Morph_OrbitalCommand_quick.id)
+                if self.can_do(obs,actions.FUNCTIONS.Morph_OrbitalCommand_quick.id):
                     return actions.FUNCTIONS.Morph_OrbitalCommand_quick("now")
             if mineral>200:
                 if len(scv_All)<50:
