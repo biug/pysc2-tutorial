@@ -146,7 +146,8 @@ class TerranAgent(base_agent.BaseAgent):
           print("last action = %s" % repr(obs.observation.last_actions[0]))
         if len(self.actions) > 0:
             action = self.actions.pop(0)
-            arg = self.action_args.pop(0)
+            if len(self.action_args)>0:
+                arg = self.action_args.pop(0)
             if not self.can_do(obs, action.id):
                 return actions.FUNCTIONS.no_op()
             if action.id == actions.FUNCTIONS.Attack_minimap.id:
